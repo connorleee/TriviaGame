@@ -18,3 +18,37 @@
     // show total guessesCorrect, guessesIncorrect
     // Write: thanks for playing!
 
+
+$(document).readyState();
+
+var gameInfo = [
+    q1 = {
+        question: "",
+        correct: "",
+        incorrect: ["incorrect 1", "incorrect 2", "incorrect 3"]
+    },
+
+    q2 = {
+        question: "",
+        correct: "",
+        incorrect: ["incorrect 1", "incorrect 2", "incorrect 3"]
+    },
+
+    q3 = {
+        question: "",
+        correct: "",
+        incorrect: ["incorrect 1", "incorrect 2", "incorrect 3"]
+    },
+
+    q4 = {
+        question: "",
+        correct: "",
+        incorrect: ["incorrect 1", "incorrect 2", "incorrect 3"]
+    },
+    
+    q5 = {
+        question: "",
+        correct: "",
+        incorrect: ["incorrect 1", "incorrect 2", "incorrect 3"]
+    },
+]
