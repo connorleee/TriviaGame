@@ -22,78 +22,65 @@
         </div>
     </div>
 
-    <!-- Page 1: Game start screen -->
-    <div class="container" id="start-screen" style="display: block;">
-        <!-- Options -->
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <button class="btn bg-primary text-light">
-                    <p id="Start">Click to start game!</p>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Page 2: Question screen -->
-    <div class="container" id="question-screen" style="display: none;">
-        <!-- Time remaining -->
-        <div class="row">
-            <h3 id="time-remaining">Time remaining: </h3>
-        </div>
-
-        <!-- Question -->
-        <div class="row">
-            <h2 id="Question"></h2>
-        </div>
-
-        <!-- Options -->
-        <div class="row">
-            <div class="col-md-12">
-                <!-- Option 1 -->
-                <div class="row">
-                    <a href="answer-results.html">
-                        <button class="btn bg-primary mb-2 text-light">
-                            <p id="answer1">test</p>
-                        </button>
-                    </a>
-                </div>
-
-                <!-- Option 2 -->
-                <div class="row">
-                    <a href="answer-results.html">
-                        <button class="btn bg-primary mb-2 text-light">
-                            <p id="answer2">test</p>
-                        </button>
-                    </a>
-                </div>
-
-                <!-- Option 3 -->
-                <div class="row">
-                    <a href="answer-results.html">
-                        <button class="btn bg-primary mb-2 text-light">
-                            <p id="answer3">test</p>
-                        </button>
-                    </a>
-                </div>
-
-                <!-- Option 4 -->
-                <div class="row">
-                    <a href="answer-results.html">
-                        <button class="btn bg-primary mb-2 text-light">
-                            <p id="answer4">test</p>
-                        </button>
-                    </a>
+    <!-- Gamestate container -->
+    <div class="container jumbotron" id="game-container">
+        <!-- Page 1: Game start screen -->
+        <div class="container" id="start-screen" style="display: none;">
+            <!-- Options -->
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <button class="btn bg-primary text-light" id="start">
+                        <p>Click to start game!</p>
+                    </button>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="container" id="answer-results" style="display: none;">
+        <!-- Page 2: Question screen -->
+        <div class="container" id="question-screen" style="display: none;">
+            <!-- Time remaining -->
+            <div class="row mb-2">
+                <h3 id="time-remaining">Time remaining: </h3>
+            </div>
 
-    </div>
+            <!-- Question -->
+            <div class="row mb-2">
+                <h2 id="question"></h2>
+            </div>
 
-    <div class="container" id="final-results" style="display: none;">
+            <!-- Options -->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Option 1 -->
+                    <div class="row">
+                        <button class="btn bg-primary mb-2 text-light" id="answer1"></button>
+                    </div>
 
+                    <!-- Option 2 -->
+                    <div class="row">
+                        <button class="btn bg-primary mb-2 text-light" id="answer2"></button>
+                    </div>
+
+                    <!-- Option 3 -->
+                    <div class="row">
+                        <button class="btn bg-primary mb-2 text-light" id="answer3"></button>
+                    </div>
+
+                    <!-- Option 4 -->
+                    <div class="row">
+                        <button class="btn bg-primary mb-2 text-light" id="answer4"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container" id="answer-results" style="display: none;">
+
+        </div>
+
+        <div class="container" id="final-results" style="display: none;">
+
+        </div>
     </div>
 
 

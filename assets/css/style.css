@@ -5,3 +5,11 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;  
 }
+
+#game-header, #game-container {
+    max-width: 980px;
+}
+
+.jumbotron {
+    background-color: rgba(211, 211, 211, 0.75);
+}

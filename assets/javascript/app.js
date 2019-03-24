@@ -19,7 +19,7 @@
 // Write: thanks for playing!
 
 
-$(document).readyState() {
+$(document).ready(function() {
 
     var gameInfo = [
         q1 = {
@@ -48,8 +48,8 @@ $(document).readyState() {
             question: "What state is the only state in the country to not have a National Park or Monument?",
             correct: "Delaware",
             incorrect: [
-                "Rhode Island", 
-                "Kansas", 
+                "Rhode Island",
+                "Kansas",
                 "Luisiana"
             ],
             correctExtension: ""
@@ -59,8 +59,8 @@ $(document).readyState() {
             question: "What national park reaches into three states?",
             correct: "Yellowstone",
             incorrect: [
-                "Great Smokey Mountains", 
-                "Grand Canyon", 
+                "Great Smokey Mountains",
+                "Grand Canyon",
                 "Death Valley"
             ],
             correctExtension: " which reaches into Wyoming, Montana, and Idaho!"
@@ -70,8 +70,8 @@ $(document).readyState() {
             question: "Which is the largest national park?",
             correct: "Wrangell-St. Elias National Park, Alaska",
             incorrect: [
-                "Yosemite National Park, California", 
-                "Haleakala National Park, Hawaii", 
+                "Yosemite National Park, California",
+                "Haleakala National Park, Hawaii",
                 "Yellowstone National Park, Wyoming"
             ],
             correctExtension: " with a whopping 13.2 million acres!"
@@ -82,21 +82,41 @@ $(document).readyState() {
     var incorrectAnswers = 0;
     var gameFinished = false;
     var remainingTime = 20;
+    
+    // Start game when game start screen button is clicked. hide start screen, show question screen
+    $("#start").click(function(){
+        $("#start-screen").hide();
+        $("#question-screen").show();
+        
+        chooseQuestion();
 
-    // question timer function that runs for 20 seconds, then displays the results page for an incorrect response
-    var questionTimeout = setTimeout(function () {
-        // display the results page as an incorrect response
-    }, 1000 * 20);
+        // question timer function that runs for 20 seconds, then displays the results page for an incorrect response
+        var questionTimeout = setTimeout(function () {
+            // display the results page as an incorrect response
+            $("#question-screen").hide();
+            $("#answer-results").show();
+        }, 1000 * 20);
+    })
 
-    function resetGameplay() {
-        remainingTime = 20;
-        $("#question").text("testing 123");
+    function chooseQuestion(){
+        // Choose random q# from the gameInfo array
+        var currentQuestion = gameInfo[Math.floor(Math.random()*gameInfo.length)];
+        console.log("Current question: " + currentQuestion);
+
+        $("#question").text(currentQuestion.question);
         $("#answer1").text("testing a1");
         $("#answer2").text("testing a2");
         $("#answer3").text("testing a3");
         $("#answer4").text("testing a4");
-
     }
 
+
+
+    function resetGameplay() {
+        $("#start-screen").show();
+        remainingTime = 20;
+
+    };
+
     resetGameplay();
-}
+})
