@@ -9,14 +9,18 @@
 </head>
 
 <body>
-    <div class="container">
+    <!-- Header -->
+    <div class="container" id="game-header">
         <!-- Title of game -->
         <div class="row">
             <div class="col-md-12">
                 <h1 id="game-title" class="text-center">National Parks Trivia!</h1>
             </div>
         </div>
+    </div>
 
+    <!-- Page 1: Game start screen -->
+    <div class="container" id="start-screen" style="display: none;">
         <!-- Options -->
         <div class="row">
             <div class="col-md-12 text-center">
@@ -28,6 +32,62 @@
             </div>
         </div>
     </div>
+
+    <!-- Page 2: Question screen -->
+    <div class="container" id="question-screen" style="display: none;">
+        <!-- Time remaining -->
+        <div class="row">
+            <h3 id="time-remaining">Time remaining: </h3>
+        </div>
+
+        <!-- Question -->
+        <div class="row">
+            <h2 id="Question"></h2>
+        </div>
+
+        <!-- Options -->
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Option 1 -->
+                <div class="row">
+                    <a href="answer-results.html">
+                        <button class="btn bg-primary mb-2 text-light">
+                            <p id="answer1">test</p>
+                        </button>
+                    </a>
+                </div>
+
+                <!-- Option 2 -->
+                <div class="row">
+                    <a href="answer-results.html">
+                        <button class="btn bg-primary mb-2 text-light">
+                            <p id="answer2">test</p>
+                        </button>
+                    </a>
+                </div>
+
+                <!-- Option 3 -->
+                <div class="row">
+                    <a href="answer-results.html">
+                        <button class="btn bg-primary mb-2 text-light">
+                            <p id="answer3">test</p>
+                        </button>
+                    </a>
+                </div>
+
+                <!-- Option 4 -->
+                <div class="row">
+                    <a href="answer-results.html">
+                        <button class="btn bg-primary mb-2 text-light">
+                            <p id="answer4">test</p>
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="assets/javascript/app.js"></script>
