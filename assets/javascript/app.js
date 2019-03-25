@@ -81,9 +81,14 @@ $(document).ready(function () {
     var correctAnswers = 0;
     var incorrectAnswers = 0;
     var gameFinished = false;
-    // var remainingTime = 10;
+    var remainingTime = 10;
     // var timeLimit = remainingTime;
     var resultTime = 3;
+
+    // ensures timer doesn't start ticking down faster
+    var timeRunning = false;
+    // variable to store the timer
+    var intervalID;
 
     function resetGameplay() {
         $("#start-screen").show();
@@ -101,24 +106,30 @@ $(document).ready(function () {
         $("#question-screen").hide();
         $("#answer-results").show();
         $("#verdict").text("Out of time!");
-       
+
         incorrectAnswers++
-        
+
         setTimeout(chooseQuestion, 1000 * resultTime);
     }
 
+    function countDown(){
+        remainingTime--
+        $("#time-remaining").text(remainingTime);
+    }
+    
     function chooseQuestion() {
         $("#answer-results").hide();
         $("#start-screen").hide();
         $("#question-screen").show();
         remainingTime = 10;
-        
+        $("#time-remaining").text(remainingTime);
+
+
         // Choose random q# from the gameInfo array
         var currentQuestion = gameInfo[Math.floor(Math.random() * gameInfo.length)];
         console.log("Current question: " + currentQuestion.question);
         console.log("Correct answer: " + currentQuestion.correct);
 
-        $("#time-remaining").text(remainingTime);
         $("#question").text(currentQuestion.question);
         $("#answer1").text("testing a1");
         $("#answer2").text("testing a2");
@@ -126,13 +137,13 @@ $(document).ready(function () {
         $("#answer4").text("testing a4");
 
         // question timer function that runs for 20 seconds, then displays the results page for an incorrect response
-        setTimeout(timeOutResult, 1000 * timeLimit);
+        setTimeout(timeOutResult, 1000 * 10);
 
         // Counts down
-        setInterval(function () {
-            $("#time-remaining").text(remainingTime);
-            remainingTime--;
-        }, 1000);
+        if (!timeRunning) {
+            intervalId = setInterval(countDown, 1000);
+            timeRunning = true;
+        }
 
 
         // TODO: remove currentQuestion from the gameInfo array
