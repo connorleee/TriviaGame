@@ -30,7 +30,8 @@ $(document).ready(function () {
                 "Longs Peak - Rocky Mountain National Park, Colorado",
                 "Half Dome - Yosemite National Park, California"
             ],
-            correctExtension: " at 20,302 ft!"
+            correctExtension: " at 20,302 ft!",
+            image: "../images/Mckinley.jpg"
         },
 
         q2 = {
@@ -41,7 +42,8 @@ $(document).ready(function () {
                 "Wind Cave National Park, South Dakota",
                 "Jewel Cave National Monument"
             ],
-            correctExtension: " at 3454 mapped miles!"
+            correctExtension: " at 3454 mapped miles!",
+            image: "../images/Mammoth.jpg"
         },
 
         q3 = {
@@ -52,7 +54,8 @@ $(document).ready(function () {
                 "Kansas",
                 "Luisiana"
             ],
-            correctExtension: ""
+            correctExtension: "",
+            image: "../images/Delaware.jpg"
         },
 
         q4 = {
@@ -63,7 +66,8 @@ $(document).ready(function () {
                 "Grand Canyon",
                 "Death Valley"
             ],
-            correctExtension: " which reaches into Wyoming, Montana, and Idaho!"
+            correctExtension: " which reaches into Wyoming, Montana, and Idaho!",
+            image: "../images/Yellowstone.jpg"
         },
 
         q5 = {
@@ -74,7 +78,8 @@ $(document).ready(function () {
                 "Haleakala National Park, Hawaii",
                 "Yellowstone National Park, Wyoming"
             ],
-            correctExtension: " with a whopping 13.2 million acres!"
+            correctExtension: " with a whopping 13.2 million acres!",
+            image: "../images/Wrangell.jpg"
         },
     ];
 
@@ -100,23 +105,53 @@ $(document).ready(function () {
         chooseQuestion();
     })
 
+    // TODO: create correct answer result function
+    function correctAnswerResult() {
+        // display the results page as an incorrect response
+        $("#question-screen").hide();
+        $("#answer-results").show();
+        $("#verdict").text("Correct!");
+        // TODO: $("#correct-answer").text(this.correct)
+        // TODO: $("#correct-image").attr("src","this.image")
+
+        correctAnswers++
+
+        setTimeout(chooseQuestion, 1000 * resultTime);
+    }
+
+    // TODO: create incorrect answer result function
+    function correctAnswerResult() {
+        // display the results page as an incorrect response
+        $("#question-screen").hide();
+        $("#answer-results").show();
+        $("#verdict").text("Incorrect!");
+        // TODO: $("#correct-answer").text(this.correct)
+        // TODO: $("#correct-image").attr("src","this.image")
+
+        incorrectAnswer++
+
+        setTimeout(chooseQuestion, 1000 * resultTime);
+    }   
+
     // shows the result of the user's guess or if they timed out. 
     function timeOutResult() {
         // display the results page as an incorrect response
         $("#question-screen").hide();
         $("#answer-results").show();
         $("#verdict").text("Out of time!");
+        // TODO: $("#correct-answer").text(this.correct)
+        // TODO: $("#correct-image").attr("src","this.image")
 
         incorrectAnswers++
 
         setTimeout(chooseQuestion, 1000 * resultTime);
     }
 
-    function countDown(){
+    function countDown() {
         remainingTime--
         $("#time-remaining").text(remainingTime);
     }
-    
+
     function chooseQuestion() {
         $("#answer-results").hide();
         $("#start-screen").hide();
