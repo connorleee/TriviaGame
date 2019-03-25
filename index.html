@@ -40,7 +40,7 @@
         <div class="container" id="question-screen" style="display: none;">
             <!-- Time remaining -->
             <div class="row mb-2">
-                <h3 id="time-remaining">Time remaining: </h3>
+                <h3>Time remaining: <span id="time-remaining"></span></h3>
             </div>
 
             <!-- Question -->
@@ -75,11 +75,32 @@
         </div>
 
         <div class="container" id="answer-results" style="display: none;">
+            <div class="row">
+                <h3 id="verdict"></h3><!-- correct! or incorrect! or out of time! -->
+            </div>
+            <div class="row">
+                <p id="correct-answer"></p>
+            </div>
+            <div class="row">
+                <img class="correct-image">
+            </div>
 
         </div>
 
         <div class="container" id="final-results" style="display: none;">
-
+            <div class="row">
+                <h2>Thanks for Playing!</h2>
+                <h3>Here are your results: </h3>
+            </div>
+            <div class="row">
+                <p>Correct: <span id="number-correct"></span></p>
+            </div>
+            <div class="row">
+                <p>Incorrect: <span id="number-incorrect"></span></p>
+            </div>
+            <div class="row">
+                <button class="btn bg-primary" id="play-again">Play again?</button>
+            </div>
         </div>
     </div>
 

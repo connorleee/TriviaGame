@@ -19,7 +19,7 @@
 // Write: thanks for playing!
 
 
-$(document).ready(function() {
+$(document).ready(function () {
 
     var gameInfo = [
         q1 = {
@@ -81,42 +81,65 @@ $(document).ready(function() {
     var correctAnswers = 0;
     var incorrectAnswers = 0;
     var gameFinished = false;
-    var remainingTime = 20;
-    
-    // Start game when game start screen button is clicked. hide start screen, show question screen
-    $("#start").click(function(){
-        $("#start-screen").hide();
-        $("#question-screen").show();
-        
-        chooseQuestion();
+    // var remainingTime = 10;
+    // var timeLimit = remainingTime;
+    var resultTime = 3;
 
-        // question timer function that runs for 20 seconds, then displays the results page for an incorrect response
-        var questionTimeout = setTimeout(function () {
-            // display the results page as an incorrect response
-            $("#question-screen").hide();
-            $("#answer-results").show();
-        }, 1000 * 20);
+    function resetGameplay() {
+        $("#start-screen").show();
+        remainingTime = 10;
+    };
+
+    // Start game when game start screen button is clicked. hide start screen, show question screen
+    $("#start").click(function () {
+        chooseQuestion();
     })
 
-    function chooseQuestion(){
-        // Choose random q# from the gameInfo array
-        var currentQuestion = gameInfo[Math.floor(Math.random()*gameInfo.length)];
-        console.log("Current question: " + currentQuestion);
+    // shows the result of the user's guess or if they timed out. 
+    function timeOutResult() {
+        // display the results page as an incorrect response
+        $("#question-screen").hide();
+        $("#answer-results").show();
+        $("#verdict").text("Out of time!");
+       
+        incorrectAnswers++
+        
+        setTimeout(chooseQuestion, 1000 * resultTime);
+    }
 
+    function chooseQuestion() {
+        $("#answer-results").hide();
+        $("#start-screen").hide();
+        $("#question-screen").show();
+        remainingTime = 10;
+        
+        // Choose random q# from the gameInfo array
+        var currentQuestion = gameInfo[Math.floor(Math.random() * gameInfo.length)];
+        console.log("Current question: " + currentQuestion.question);
+        console.log("Correct answer: " + currentQuestion.correct);
+
+        $("#time-remaining").text(remainingTime);
         $("#question").text(currentQuestion.question);
         $("#answer1").text("testing a1");
         $("#answer2").text("testing a2");
         $("#answer3").text("testing a3");
         $("#answer4").text("testing a4");
+
+        // question timer function that runs for 20 seconds, then displays the results page for an incorrect response
+        setTimeout(timeOutResult, 1000 * timeLimit);
+
+        // Counts down
+        setInterval(function () {
+            $("#time-remaining").text(remainingTime);
+            remainingTime--;
+        }, 1000);
+
+
+        // TODO: remove currentQuestion from the gameInfo array
+        // TODO: randomly assign answers to the buttons
+        // TODO: provide logic if a button is clicked... correct or incorrect
     }
 
-
-
-    function resetGameplay() {
-        $("#start-screen").show();
-        remainingTime = 20;
-
-    };
 
     resetGameplay();
 })
