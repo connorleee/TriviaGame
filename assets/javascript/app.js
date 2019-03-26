@@ -96,12 +96,7 @@ $(document).ready(function () {
     var intervalId;
     var timerId;
 
-    function questionTimer(){
-        // question timer function that runs for 20 seconds
-        timerId = setTimeout(timeOutResult, 1000 * 10);
-    }
-
-
+    
     function resetGameplay() {
         $("#start-screen").show();
         $("#answer-results").hide();
@@ -113,7 +108,7 @@ $(document).ready(function () {
         shuffleArray(gameInfo);
         console.log(shuffleArray(gameInfo));
     };
-
+    
     // Start game when game start screen button is clicked. hide start screen, show question screen
     $("#start").click(function () {
         // create a function that is called on game start. this runs a for loop through the gameInfo array
@@ -121,10 +116,10 @@ $(document).ready(function () {
         for (let i = 0; i < gameInfo.length; i++) {
             loadQuestion(gameInfo[i]);
         }
-
+        
         finalResults();
     })
-
+    
     // TODO: create correct answer result function
     function correctAnswerResult() {
         // display the results page as an incorrect response
@@ -133,12 +128,12 @@ $(document).ready(function () {
         $("#verdict").text("Correct!");
         // TODO: $("#correct-answer").text(this.correct)
         // TODO: $("#correct-image").attr("src","this.image")
-
+        
         correctAnswers++
-
+        
         setTimeout(loadQuestion, 1000 * resultTime);
     }
-
+    
     // TODO: create incorrect answer result function
     function incorrectAnswerResult() {
         // display the results page as an incorrect response
@@ -147,12 +142,12 @@ $(document).ready(function () {
         $("#verdict").text("Incorrect!");
         // TODO: $("#correct-answer").text(this.correct)
         // TODO: $("#correct-image").attr("src","this.image")
-
+        
         incorrectAnswer++
-
+        
         setTimeout(loadQuestion, 1000 * resultTime);
     }
-
+    
     // shows the result of the user's guess or if they timed out. 
     function timeOutResult() {
         // display the results page as an incorrect response
@@ -161,17 +156,23 @@ $(document).ready(function () {
         $("#verdict").text("Out of time!");
         // TODO: $("#correct-answer").text(this.correct)
         // TODO: $("#correct-image").attr("src","this.image")
-
+        
         unanswered++
-
+        
         setTimeout(loadQuestion, 1000 * resultTime);
     }
 
+    function questionTimer(){
+        // question timer function that runs for 10 seconds
+        setTimeout(timeOutResult, 1000 * 10);
+        // clearTimeout(timerId);
+    }
+    
     function countDown() {
         remainingTime--
         $("#time-remaining").text(remainingTime);
     }
-
+    
     function shuffleArray(a) {
         console.log("shuffle: " + a);
         var j, x, i;
@@ -194,26 +195,36 @@ $(document).ready(function () {
         $("#time-remaining").text(remainingTime);
 
         // shuffle the order of responses
-        console.log("about to shuffle responses: " + q.responses);
+        console.log("responses before shuffle: " + q.responses);
         var shuffledResponses = shuffleArray(q.responses);
         console.log("shuffled responses: " + shuffledResponses);
 
+        // randomly assign answers to the buttons
         $("#question").text(q.question);
         $("#answer1").text(q.responses[0].text);
         $("#answer2").text(q.responses[1].text);
         $("#answer3").text(q.responses[2].text);
         $("#answer4").text(q.responses[3].text);
 
-        questionTimer();
+        // assign corresponding correct:boolean to the shuffled responses
+        console.log("attribute of index 0: "+ q.responses[0].correct);
+        $("#answer1").attr("value", q.responses[0].correct);
+        $("#answer2").attr("value", q.responses[1].correct);
+        $("#answer3").attr("value", q.responses[2].correct);
+        $("#answer4").attr("value", q.responses[3].correct);
 
         // Counts down
         if (!timeRunning) {
             intervalId = setInterval(countDown, 1000);
             timeRunning = true;
         }
+        
+        questionTimer();
 
-        // TODO: randomly assign answers to the buttons
         // TODO: provide logic if a button is clicked... correct or incorrect
+        // $(".response").click(function(){
+        //     if(
+        // })
     }
 
     function finalResults() {
