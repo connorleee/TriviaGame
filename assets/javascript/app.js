@@ -24,11 +24,11 @@ $(document).ready(function () {
     var gameInfo = [
         q1 = {
             question: "What is the highest point of elevation in all the national parks?",
-            correct: "Mt. Mckinley - Denali National Park, Alaska",
-            incorrect: [
-                "Mt. Rainier - Mount Rainier National Park, Washinton",
-                "Longs Peak - Rocky Mountain National Park, Colorado",
-                "Half Dome - Yosemite National Park, California"
+            responses: [
+                { text: "Mt. Mckinley - Denali National Park, Alaska", correct: true },
+                { text: "Mt. Rainier - Mount Rainier National Park, Washinton", correct: false },
+                { text: "Longs Peak - Rocky Mountain National Park, Colorado", correct: false },
+                { text: "Half Dome - Yosemite National Park, California", correct: false },
             ],
             correctExtension: " at 20,302 ft!",
             image: "../images/Mckinley.jpg"
@@ -36,11 +36,11 @@ $(document).ready(function () {
 
         q2 = {
             question: "Which national park has the longest cave system in the world?",
-            correct: "Mammoth Cave National Park, Kentucky",
-            incorrect: [
-                "Carlsbad Caverns, New Mexico",
-                "Wind Cave National Park, South Dakota",
-                "Jewel Cave National Monument"
+            responses: [
+                { text: "Mammoth Cave National Park, Kentucky", correct: true },
+                { text: "Carlsbad Caverns, New Mexico", correct: false },
+                { text: "Wind Cave National Park, South Dakota", correct: false },
+                { text: "Jewel Cave National Monument", correct: false },
             ],
             correctExtension: " at 3454 mapped miles!",
             image: "../images/Mammoth.jpg"
@@ -48,11 +48,11 @@ $(document).ready(function () {
 
         q3 = {
             question: "What state is the only state in the country to not have a National Park or Monument?",
-            correct: "Delaware",
-            incorrect: [
-                "Rhode Island",
-                "Kansas",
-                "Luisiana"
+            respsonses: [
+                { text: "Delaware", correct: true },
+                { text: "Rhode Island", correct: false },
+                { text: "Kansas", correct: false },
+                { text: "Luisiana", correct: false },
             ],
             correctExtension: "",
             image: "../images/Delaware.jpg"
@@ -60,11 +60,11 @@ $(document).ready(function () {
 
         q4 = {
             question: "What national park reaches into three states?",
-            correct: "Yellowstone",
-            incorrect: [
-                "Great Smokey Mountains",
-                "Grand Canyon",
-                "Death Valley"
+            responses: [
+                { text: "Yellowstone", correct: true },
+                { text: "Great Smokey Mountains", correct: false },
+                { text: "Grand Canyon", correct: false },
+                { text: "Death Valley", correct: false },
             ],
             correctExtension: " which reaches into Wyoming, Montana, and Idaho!",
             image: "../images/Yellowstone.jpg"
@@ -72,11 +72,11 @@ $(document).ready(function () {
 
         q5 = {
             question: "Which is the largest national park?",
-            correct: "Wrangell-St. Elias National Park, Alaska",
-            incorrect: [
-                "Yosemite National Park, California",
-                "Haleakala National Park, Hawaii",
-                "Yellowstone National Park, Wyoming"
+            responses: [
+                { text: "Wrangell-St. Elias National Park, Alaska", correct: false },
+                { text: "Yosemite National Park, California", correct: false },
+                { text: "Haleakala National Park, Hawaii", correct: false },
+                { text: "Yellowstone National Park, Wyoming", correct: false }
             ],
             correctExtension: " with a whopping 13.2 million acres!",
             image: "../images/Wrangell.jpg"
@@ -131,7 +131,7 @@ $(document).ready(function () {
         incorrectAnswer++
 
         setTimeout(chooseQuestion, 1000 * resultTime);
-    }   
+    }
 
     // shows the result of the user's guess or if they timed out. 
     function timeOutResult() {
@@ -179,7 +179,6 @@ $(document).ready(function () {
             intervalId = setInterval(countDown, 1000);
             timeRunning = true;
         }
-
 
         // TODO: remove currentQuestion from the gameInfo array
         // TODO: randomly assign answers to the buttons
