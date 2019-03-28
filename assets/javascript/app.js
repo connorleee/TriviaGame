@@ -73,7 +73,7 @@ $(document).ready(function () {
         q5 = {
             question: "Which is the largest national park?",
             responses: [
-                { text: "Wrangell-St. Elias National Park, Alaska", correct: false },
+                { text: "Wrangell-St. Elias National Park, Alaska", correct: true },
                 { text: "Yosemite National Park, California", correct: false },
                 { text: "Haleakala National Park, Hawaii", correct: false },
                 { text: "Yellowstone National Park, Wyoming", correct: false }
@@ -86,16 +86,7 @@ $(document).ready(function () {
     var correctAnswers = 0;
     var incorrectAnswers = 0;
     var unanswered = 0;
-    var gameFinished = false;
-    var remainingTime = 10;
-    var resultTime = 3;
-    var questionComplete = true;
-
-
-    // variables to store the interval and timer
-    // var intervalId;
-    var timerId;
-
+    var resultTime = 1;
 
     function resetGameplay() {
         $("#start-screen").show();
@@ -103,7 +94,6 @@ $(document).ready(function () {
         $("#question-screen").hide();
         $("#final-results").hide();
 
-        remainingTime = 10;
         // shuffle the question objects array to determine which question to ask first
         shuffleArray(gameInfo);
         console.log(shuffleArray(gameInfo));
@@ -115,7 +105,107 @@ $(document).ready(function () {
         loadQuestion()
     })
 
-    // TODO: create correct answer result function
+
+    function shuffleArray(a) {
+        var j, x, i;
+        for (i = a.length - 1; i > 0; i--) {
+            j = Math.floor(Math.random() * (i + 1));
+            x = a[i];
+            a[i] = a[j];
+            a[j] = x;
+        }
+        return a;
+    }
+
+    function loadQuestion() {
+        // end game logic
+        if (gameInfo.length !== 0) {
+            // remove the current question from the array so it can't be chosen again
+            q = gameInfo.pop();
+            console.log("Game info pop: " + { q });
+            console.log("GameInfo length: " + gameInfo.length);
+
+            console.log("question: " + q);
+            // console.log({ q });
+            $("#answer-results").hide();
+            $("#start-screen").hide();
+            $("#question-screen").show();
+
+            // shuffle the order of responses
+            shuffleArray(q.responses);
+            console.log("shuffled responses: " + shuffleArray(q.responses));
+
+            // randomly assign answers to the buttons
+            $("#question").text(q.question);
+            $("#answer1").text(q.responses[0].text);
+            $("#answer2").text(q.responses[1].text);
+            $("#answer3").text(q.responses[2].text);
+            $("#answer4").text(q.responses[3].text);
+
+            // assign corresponding correct:boolean to the shuffled responses
+            // console.log("attribute of index 0: " + q.responses[0].correct);
+            console.log("btn 1: " + q.responses[0].correct);
+            console.log("btn 2: " + q.responses[1].correct);
+            console.log("btn 3: " + q.responses[2].correct);
+            console.log("btn 4: " + q.responses[3].correct);
+
+            $("#answer1").attr("value", q.responses[0].correct);
+            $("#answer2").attr("value", q.responses[1].correct);
+            $("#answer3").attr("value", q.responses[2].correct);
+            $("#answer4").attr("value", q.responses[3].correct);
+
+            var remainingTime = 10;
+            $("#time-remaining").text(remainingTime);
+            var timer = setInterval(function () {
+                remainingTime--
+                $("#time-remaining").text(remainingTime);
+                if (remainingTime === 0) {
+                    clearInterval(timer)
+                    timeOutResult()
+                }
+            }, 1000);
+
+            // provide logic if a button is clicked... correct or incorrect
+            $("#answer1").click(function () {
+                console.log("on click button 1: " + q.responses[0].correct)
+                clearInterval(timer)
+                if ($("#answer1").attr("value", q.responses[0].correct)) {
+                    correctAnswerResult();
+                } else {
+                    incorrectAnswerResult();
+                }
+            })
+            $("#answer2").click(function () {
+                clearInterval(timer)
+                if ($("#answer2").attr("value", q.responses[1].correct)) {
+                    correctAnswerResult();
+                } else {
+                    incorrectAnswerResult();
+                }
+            })
+            $("#answer3").click(function () {
+                clearInterval(timer)
+                if ($("#answer3").attr("value", q.responses[2].correct)) {
+                    correctAnswerResult();
+                } else {
+                    incorrectAnswerResult();
+                }
+            })
+            $("#answer4").click(function () {
+                clearInterval(timer)
+                if ($("#answer4").attr("value", q.responses[3].correct)) {
+                    correctAnswerResult();
+                } else {
+                    incorrectAnswerResult();
+                }
+            })
+        } else {
+            finalResults()
+        }
+
+
+    }
+
     function correctAnswerResult() {
         // display the results page as an incorrect response
         $("#question-screen").hide();
@@ -129,7 +219,6 @@ $(document).ready(function () {
         setTimeout(loadQuestion, 1000 * resultTime);
     }
 
-    // TODO: create incorrect answer result function
     function incorrectAnswerResult() {
         // display the results page as an incorrect response
         $("#question-screen").hide();
@@ -155,108 +244,6 @@ $(document).ready(function () {
         unanswered++
 
         setTimeout(loadQuestion, 1000 * resultTime);
-    }
-
-    function shuffleArray(a) {
-        console.log("shuffle: " + a);
-        var j, x, i;
-        for (i = a.length - 1; i > 0; i--) {
-            j = Math.floor(Math.random() * (i + 1));
-            x = a[i];
-            a[i] = a[j];
-            a[j] = x;
-        }
-        return a;
-    }
-
-    function countDown(time) {
-        var int = setInterval(function () {
-            time--
-            $("#time-remaining").text(time);
-            if (time === 0) {
-                clearInterval(int)
-                timeOutResult()
-                questionComplete = true;
-            }
-        }, 1000);
-    }
-
-    function loadQuestion() {
-        // remove the current question from the array so it can't be chosen again
-        q = gameInfo.pop();
-        console.log(q)
-
-        questionComplete = false;
-        // ensures timer doesn't start ticking down faster
-        var timeRunning = false;
-        console.log("question: " + q);
-        // console.log({ q });
-        $("#answer-results").hide();
-        $("#start-screen").hide();
-        $("#question-screen").show();
-
-        // shuffle the order of responses
-        // console.log("responses before shuffle: " + q.responses);
-        shuffleArray(q.responses);
-        // console.log("shuffled responses: " + shuffledResponses);
-
-        // randomly assign answers to the buttons
-        $("#question").text(q.question);
-        $("#answer1").text(q.responses[0].text);
-        $("#answer2").text(q.responses[1].text);
-        $("#answer3").text(q.responses[2].text);
-        $("#answer4").text(q.responses[3].text);
-
-        // assign corresponding correct:boolean to the shuffled responses
-        // console.log("attribute of index 0: " + q.responses[0].correct);
-        console.log("btn 1: " + q.responses[0].correct);
-        console.log("btn 2: " + q.responses[1].correct);
-        console.log("btn 3: " + q.responses[2].correct);
-        console.log("btn 4: " + q.responses[3].correct);
-
-        $("#answer1").attr("value", q.responses[0].correct);
-        $("#answer2").attr("value", q.responses[1].correct);
-        $("#answer3").attr("value", q.responses[2].correct);
-        $("#answer4").attr("value", q.responses[3].correct);
-
-        remainingTime = 10;
-        countDown(remainingTime);
-
-        // provide logic if a button is clicked... correct or incorrect
-        $("#answer1").click(function () {
-            if ($("#answer1").attr("value", q.responses[0].correct)) {
-                correctAnswerResult();
-            } else {
-                incorrectAnswerResult();
-            }
-        })
-        $("#answer2").click(function () {
-            if ($("#answer2").attr("value", q.responses[1].correct)) {
-                correctAnswerResult();
-            } else {
-                incorrectAnswerResult();
-            }
-        })
-        $("#answer3").click(function () {
-            if ($("#answer3").attr("value", q.responses[2].correct)) {
-                correctAnswerResult();
-            } else {
-                incorrectAnswerResult();
-            }
-        })
-        $("#answer4").click(function () {
-            if ($("#answer4").attr("value", q.responses[3].correct)) {
-                correctAnswerResult();
-            } else {
-                incorrectAnswerResult();
-            }
-        })
-
-
-
-        if (gameInfo.length < 1) {
-            finalResults()
-        }
     }
 
     function finalResults() {
