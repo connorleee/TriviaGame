@@ -119,6 +119,7 @@ $(document).ready(function () {
                 loadQuestion(gameInfo[i]);
             }
         }
+        
 
         finalResults();
     })
@@ -227,7 +228,7 @@ $(document).ready(function () {
 
 
 
-        
+
         // TODO: provide logic if a button is clicked... correct or incorrect
         // $(".response").click(function(){
         //     if(
