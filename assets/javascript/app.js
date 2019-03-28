@@ -111,17 +111,8 @@ $(document).ready(function () {
 
     // Start game when game start screen button is clicked. hide start screen, show question screen
     $("#start").click(function () {
-        // create a function that is called on game start. this runs a for loop through the gameInfo array
-        // each loop will run the core game logic
-        questionComplete = true;
-        for (let i = 0; i < gameInfo.length; i++) {
-            if (questionComplete) {
-                loadQuestion(gameInfo[i]);
-            }
-        }
-        
-
-        finalResults();
+        // calls last question in shuffled array
+        loadQuestion()
     })
 
     // TODO: create correct answer result function
@@ -190,21 +181,24 @@ $(document).ready(function () {
         }, 1000);
     }
 
-    function loadQuestion(q) {
+    function loadQuestion() {
+        // remove the current question from the array so it can't be chosen again
+        q = gameInfo.pop();
+        console.log(q)
 
         questionComplete = false;
         // ensures timer doesn't start ticking down faster
         var timeRunning = false;
         console.log("question: " + q);
-        console.log({ q });
+        // console.log({ q });
         $("#answer-results").hide();
         $("#start-screen").hide();
         $("#question-screen").show();
 
         // shuffle the order of responses
-        console.log("responses before shuffle: " + q.responses);
-        var shuffledResponses = shuffleArray(q.responses);
-        console.log("shuffled responses: " + shuffledResponses);
+        // console.log("responses before shuffle: " + q.responses);
+        shuffleArray(q.responses);
+        // console.log("shuffled responses: " + shuffledResponses);
 
         // randomly assign answers to the buttons
         $("#question").text(q.question);
@@ -214,7 +208,12 @@ $(document).ready(function () {
         $("#answer4").text(q.responses[3].text);
 
         // assign corresponding correct:boolean to the shuffled responses
-        console.log("attribute of index 0: " + q.responses[0].correct);
+        // console.log("attribute of index 0: " + q.responses[0].correct);
+        console.log("btn 1: " + q.responses[0].correct);
+        console.log("btn 2: " + q.responses[1].correct);
+        console.log("btn 3: " + q.responses[2].correct);
+        console.log("btn 4: " + q.responses[3].correct);
+
         $("#answer1").attr("value", q.responses[0].correct);
         $("#answer2").attr("value", q.responses[1].correct);
         $("#answer3").attr("value", q.responses[2].correct);
@@ -222,17 +221,42 @@ $(document).ready(function () {
 
         remainingTime = 10;
         countDown(remainingTime);
-        // $("#time-remaining").text(remainingTime);
 
-        // questionTimer();
+        // provide logic if a button is clicked... correct or incorrect
+        $("#answer1").click(function () {
+            if ($("#answer1").attr("value", q.responses[0].correct)) {
+                correctAnswerResult();
+            } else {
+                incorrectAnswerResult();
+            }
+        })
+        $("#answer2").click(function () {
+            if ($("#answer2").attr("value", q.responses[1].correct)) {
+                correctAnswerResult();
+            } else {
+                incorrectAnswerResult();
+            }
+        })
+        $("#answer3").click(function () {
+            if ($("#answer3").attr("value", q.responses[2].correct)) {
+                correctAnswerResult();
+            } else {
+                incorrectAnswerResult();
+            }
+        })
+        $("#answer4").click(function () {
+            if ($("#answer4").attr("value", q.responses[3].correct)) {
+                correctAnswerResult();
+            } else {
+                incorrectAnswerResult();
+            }
+        })
 
 
 
-
-        // TODO: provide logic if a button is clicked... correct or incorrect
-        // $(".response").click(function(){
-        //     if(
-        // })
+        if (gameInfo.length < 1) {
+            finalResults()
+        }
     }
 
     function finalResults() {
