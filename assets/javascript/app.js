@@ -89,14 +89,14 @@ $(document).ready(function () {
     var gameFinished = false;
     var remainingTime = 10;
     var resultTime = 3;
+    var questionComplete = true;
 
-    // ensures timer doesn't start ticking down faster
-    var timeRunning = false;
+
     // variables to store the interval and timer
-    var intervalId;
+    // var intervalId;
     var timerId;
 
-    
+
     function resetGameplay() {
         $("#start-screen").show();
         $("#answer-results").hide();
@@ -108,18 +108,21 @@ $(document).ready(function () {
         shuffleArray(gameInfo);
         console.log(shuffleArray(gameInfo));
     };
-    
+
     // Start game when game start screen button is clicked. hide start screen, show question screen
     $("#start").click(function () {
         // create a function that is called on game start. this runs a for loop through the gameInfo array
         // each loop will run the core game logic
+        questionComplete = true;
         for (let i = 0; i < gameInfo.length; i++) {
-            loadQuestion(gameInfo[i]);
+            if (questionComplete) {
+                loadQuestion(gameInfo[i]);
+            }
         }
-        
+
         finalResults();
     })
-    
+
     // TODO: create correct answer result function
     function correctAnswerResult() {
         // display the results page as an incorrect response
@@ -128,12 +131,12 @@ $(document).ready(function () {
         $("#verdict").text("Correct!");
         // TODO: $("#correct-answer").text(this.correct)
         // TODO: $("#correct-image").attr("src","this.image")
-        
+
         correctAnswers++
-        
+
         setTimeout(loadQuestion, 1000 * resultTime);
     }
-    
+
     // TODO: create incorrect answer result function
     function incorrectAnswerResult() {
         // display the results page as an incorrect response
@@ -142,12 +145,12 @@ $(document).ready(function () {
         $("#verdict").text("Incorrect!");
         // TODO: $("#correct-answer").text(this.correct)
         // TODO: $("#correct-image").attr("src","this.image")
-        
+
         incorrectAnswer++
-        
+
         setTimeout(loadQuestion, 1000 * resultTime);
     }
-    
+
     // shows the result of the user's guess or if they timed out. 
     function timeOutResult() {
         // display the results page as an incorrect response
@@ -156,23 +159,12 @@ $(document).ready(function () {
         $("#verdict").text("Out of time!");
         // TODO: $("#correct-answer").text(this.correct)
         // TODO: $("#correct-image").attr("src","this.image")
-        
+
         unanswered++
-        
+
         setTimeout(loadQuestion, 1000 * resultTime);
     }
 
-    function questionTimer(){
-        // question timer function that runs for 10 seconds
-        setTimeout(timeOutResult, 1000 * 10);
-        // clearTimeout(timerId);
-    }
-    
-    function countDown() {
-        remainingTime--
-        $("#time-remaining").text(remainingTime);
-    }
-    
     function shuffleArray(a) {
         console.log("shuffle: " + a);
         var j, x, i;
@@ -185,14 +177,28 @@ $(document).ready(function () {
         return a;
     }
 
+    function countDown(time) {
+        var int = setInterval(function () {
+            time--
+            $("#time-remaining").text(time);
+            if (time === 0) {
+                clearInterval(int)
+                timeOutResult()
+                questionComplete = true;
+            }
+        }, 1000);
+    }
+
     function loadQuestion(q) {
-        console.log("question: "+ q);
-        console.log({q});
+
+        questionComplete = false;
+        // ensures timer doesn't start ticking down faster
+        var timeRunning = false;
+        console.log("question: " + q);
+        console.log({ q });
         $("#answer-results").hide();
         $("#start-screen").hide();
         $("#question-screen").show();
-        remainingTime = 10;
-        $("#time-remaining").text(remainingTime);
 
         // shuffle the order of responses
         console.log("responses before shuffle: " + q.responses);
@@ -207,20 +213,21 @@ $(document).ready(function () {
         $("#answer4").text(q.responses[3].text);
 
         // assign corresponding correct:boolean to the shuffled responses
-        console.log("attribute of index 0: "+ q.responses[0].correct);
+        console.log("attribute of index 0: " + q.responses[0].correct);
         $("#answer1").attr("value", q.responses[0].correct);
         $("#answer2").attr("value", q.responses[1].correct);
         $("#answer3").attr("value", q.responses[2].correct);
         $("#answer4").attr("value", q.responses[3].correct);
 
-        // Counts down
-        if (!timeRunning) {
-            intervalId = setInterval(countDown, 1000);
-            timeRunning = true;
-        }
-        
-        questionTimer();
+        remainingTime = 10;
+        countDown(remainingTime);
+        // $("#time-remaining").text(remainingTime);
 
+        // questionTimer();
+
+
+
+        
         // TODO: provide logic if a button is clicked... correct or incorrect
         // $(".response").click(function(){
         //     if(
