@@ -86,13 +86,16 @@ $(document).ready(function () {
     var correctAnswers = 0;
     var incorrectAnswers = 0;
     var unanswered = 0;
-    var resultTime = 1;
+    var resultTime = 3;
 
     function resetGameplay() {
         $("#start-screen").show();
         $("#answer-results").hide();
         $("#question-screen").hide();
         $("#final-results").hide();
+        correctAnswers = 0;
+        incorrectAnswers = 0;
+        unanswered = 0;
 
         // shuffle the question objects array to determine which question to ask first
         shuffleArray(gameInfo);
@@ -118,7 +121,9 @@ $(document).ready(function () {
     }
 
     function loadQuestion() {
-        // end game logic
+        // console.log("Correct Answers: " + correctAnswers)
+
+        // if statement to end game when there are no more objects in the array
         if (gameInfo.length !== 0) {
             // remove the current question from the array so it can't be chosen again
             q = gameInfo.pop();
@@ -169,7 +174,7 @@ $(document).ready(function () {
             $("#answer1").click(function () {
                 console.log("on click button 1: " + q.responses[0].correct)
                 clearInterval(timer)
-                if ($("#answer1").attr("value", q.responses[0].correct)) {
+                if ($(this).attr("value") === true) {
                     correctAnswerResult();
                 } else {
                     incorrectAnswerResult();
@@ -177,7 +182,7 @@ $(document).ready(function () {
             })
             $("#answer2").click(function () {
                 clearInterval(timer)
-                if ($("#answer2").attr("value", q.responses[1].correct)) {
+                if ($(this).attr("value", q.responses[1].correct)) {
                     correctAnswerResult();
                 } else {
                     incorrectAnswerResult();
@@ -185,7 +190,7 @@ $(document).ready(function () {
             })
             $("#answer3").click(function () {
                 clearInterval(timer)
-                if ($("#answer3").attr("value", q.responses[2].correct)) {
+                if ($(this).attr("value", q.responses[2].correct)) {
                     correctAnswerResult();
                 } else {
                     incorrectAnswerResult();
@@ -193,7 +198,7 @@ $(document).ready(function () {
             })
             $("#answer4").click(function () {
                 clearInterval(timer)
-                if ($("#answer4").attr("value", q.responses[3].correct)) {
+                if ($(this).attr("value", q.responses[3].correct)) {
                     correctAnswerResult();
                 } else {
                     incorrectAnswerResult();
@@ -202,8 +207,6 @@ $(document).ready(function () {
         } else {
             finalResults()
         }
-
-
     }
 
     function correctAnswerResult() {
@@ -211,8 +214,11 @@ $(document).ready(function () {
         $("#question-screen").hide();
         $("#answer-results").show();
         $("#verdict").text("Correct!");
+
         // TODO: $("#correct-answer").text(this.correct)
+        $("#correct-answer").text(this.correct)
         // TODO: $("#correct-image").attr("src","this.image")
+        $("#correct-image").attr("src","this.image")
 
         correctAnswers++
 
@@ -227,7 +233,7 @@ $(document).ready(function () {
         // TODO: $("#correct-answer").text(this.correct)
         // TODO: $("#correct-image").attr("src","this.image")
 
-        incorrectAnswer++
+        incorrectAnswers++
 
         setTimeout(loadQuestion, 1000 * resultTime);
     }
