@@ -86,7 +86,8 @@ $(document).ready(function () {
     var correctAnswers = 0;
     var incorrectAnswers = 0;
     var unanswered = 0;
-    var resultTime = 3;
+    var resultTime = 1;
+    var shuffledGameInfo;
 
     function resetGameplay() {
         $("#start-screen").show();
@@ -98,8 +99,8 @@ $(document).ready(function () {
         unanswered = 0;
 
         // shuffle the question objects array to determine which question to ask first
-        shuffleArray(gameInfo);
-        console.log(shuffleArray(gameInfo));
+        shuffledGameInfo = shuffleArray(gameInfo);
+        console.log(shuffledGameInfo);
     };
 
     // Start game when game start screen button is clicked. hide start screen, show question screen
@@ -111,24 +112,30 @@ $(document).ready(function () {
 
     function shuffleArray(a) {
         var j, x, i;
-        for (i = a.length - 1; i > 0; i--) {
+        var b = a.slice();
+        for (i = b.length - 1; i > 0; i--) {
             j = Math.floor(Math.random() * (i + 1));
-            x = a[i];
-            a[i] = a[j];
-            a[j] = x;
+            x = b[i];
+            b[i] = b[j];
+            b[j] = x;
         }
-        return a;
+        return b;
+    }
+
+    function myTimer() {
+        
     }
 
     function loadQuestion() {
         // console.log("Correct Answers: " + correctAnswers)
 
         // if statement to end game when there are no more objects in the array
-        if (gameInfo.length !== 0) {
+        if (shuffledGameInfo.length !== 0) {
+            console.log("shuffled game info array: "+ shuffledGameInfo.length);
             // remove the current question from the array so it can't be chosen again
-            q = gameInfo.pop();
+            q = shuffledGameInfo.pop();
             console.log("Game info pop: " + { q });
-            console.log("GameInfo length: " + gameInfo.length);
+            console.log("GameInfo length: " + shuffledGameInfo.length);
 
             console.log("question: " + q);
             // console.log({ q });
@@ -137,75 +144,73 @@ $(document).ready(function () {
             $("#question-screen").show();
 
             // shuffle the order of responses
-            shuffleArray(q.responses);
-            console.log("shuffled responses: " + shuffleArray(q.responses));
+            var shuffledResponses = shuffleArray(q.responses);
+            console.log("shuffled responses: " + shuffleArray(shuffledResponses));
 
             // randomly assign answers to the buttons
             $("#question").text(q.question);
-            $("#answer1").text(q.responses[0].text);
-            $("#answer2").text(q.responses[1].text);
-            $("#answer3").text(q.responses[2].text);
-            $("#answer4").text(q.responses[3].text);
+            $("#answer1").text(shuffledResponses[0].text);
+            $("#answer2").text(shuffledResponses[1].text);
+            $("#answer3").text(shuffledResponses[2].text);
+            $("#answer4").text(shuffledResponses[3].text);
 
             // assign corresponding correct:boolean to the shuffled responses
-            // console.log("attribute of index 0: " + q.responses[0].correct);
-            console.log("btn 1: " + q.responses[0].correct);
-            console.log("btn 2: " + q.responses[1].correct);
-            console.log("btn 3: " + q.responses[2].correct);
-            console.log("btn 4: " + q.responses[3].correct);
+            // console.log("attribute of index 0: " + shuffledResponses[0].correct);
 
-            $("#answer1").attr("value", q.responses[0].correct);
-            $("#answer2").attr("value", q.responses[1].correct);
-            $("#answer3").attr("value", q.responses[2].correct);
-            $("#answer4").attr("value", q.responses[3].correct);
+            $("#answer1").attr("value", shuffledResponses[0].correct);
+            $("#answer2").attr("value", shuffledResponses[1].correct);
+            $("#answer3").attr("value", shuffledResponses[2].correct);
+            $("#answer4").attr("value", shuffledResponses[3].correct);
 
-            var remainingTime = 10;
-            $("#time-remaining").text(remainingTime);
-            var timer = setInterval(function () {
-                remainingTime--
-                $("#time-remaining").text(remainingTime);
-                if (remainingTime === 0) {
-                    clearInterval(timer)
-                    timeOutResult()
-                }
-            }, 1000);
+            // var remainingTime = 10;
+            // $("#time-remaining").text(remainingTime);
+            // var timer = setInterval(function () {
+            //     remainingTime--
+            //     console.log("remaining time: " + remainingTime);
+            //     $("#time-remaining").text(remainingTime);
+            //     if (remainingTime === 0) {
+            //         console.log("trying to clear timer: " + timer)
+            //         clearInterval(timer)
+            //         timeOutResult()
+            //     }
+            // }, 1000);
 
             // provide logic if a button is clicked... correct or incorrect
             $("#answer1").click(function () {
-                console.log("on click button 1: " + q.responses[0].correct)
-                clearInterval(timer)
-                if ($(this).attr("value") === true) {
+                // clearInterval(timer)
+                if ($(this).attr("value") === "true") {
                     correctAnswerResult();
                 } else {
                     incorrectAnswerResult();
                 }
             })
             $("#answer2").click(function () {
-                clearInterval(timer)
-                if ($(this).attr("value", q.responses[1].correct)) {
+                // clearInterval(timer)
+                if ($(this).attr("value") === "true") {
                     correctAnswerResult();
                 } else {
                     incorrectAnswerResult();
                 }
             })
             $("#answer3").click(function () {
-                clearInterval(timer)
-                if ($(this).attr("value", q.responses[2].correct)) {
+                // clearInterval(timer)
+                if ($(this).attr("value") === "true") {
                     correctAnswerResult();
                 } else {
                     incorrectAnswerResult();
                 }
             })
             $("#answer4").click(function () {
-                clearInterval(timer)
-                if ($(this).attr("value", q.responses[3].correct)) {
+                // clearInterval(timer)
+                if ($(this).attr("value") === "true") {
                     correctAnswerResult();
                 } else {
                     incorrectAnswerResult();
                 }
             })
         } else {
-            finalResults()
+            // clearInterval(timer);
+            finalResults();
         }
     }
 
@@ -216,11 +221,9 @@ $(document).ready(function () {
         $("#verdict").text("Correct!");
 
         // TODO: $("#correct-answer").text(this.correct)
-        $("#correct-answer").text(this.correct)
         // TODO: $("#correct-image").attr("src","this.image")
-        $("#correct-image").attr("src","this.image")
 
-        correctAnswers++
+        correctAnswers += 1;
 
         setTimeout(loadQuestion, 1000 * resultTime);
     }
@@ -233,7 +236,9 @@ $(document).ready(function () {
         // TODO: $("#correct-answer").text(this.correct)
         // TODO: $("#correct-image").attr("src","this.image")
 
-        incorrectAnswers++
+        incorrectAnswers += 1;
+        console.log("incorrect anaswers: " + incorrectAnswers)
+        console.log("shuffled game info array after response: " + shuffledGameInfo);
 
         setTimeout(loadQuestion, 1000 * resultTime);
     }
@@ -247,7 +252,7 @@ $(document).ready(function () {
         // TODO: $("#correct-answer").text(this.correct)
         // TODO: $("#correct-image").attr("src","this.image")
 
-        unanswered++
+        unanswered += 1
 
         setTimeout(loadQuestion, 1000 * resultTime);
     }
