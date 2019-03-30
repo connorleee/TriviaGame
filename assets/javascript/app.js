@@ -83,9 +83,9 @@ $(document).ready(function () {
         },
     ];
 
-    var correctAnswers = 0;
-    var incorrectAnswers = 0;
-    var unanswered = 0;
+    var correctAnswers;
+    var incorrectAnswers;
+    var unanswered;
     var resultTime = 1;
     var shuffledGameInfo;
 
@@ -175,6 +175,12 @@ $(document).ready(function () {
             //     }
             // }, 1000);
 
+            // clear the click functions so they dont double up
+            $("#answer1").off();
+            $("#answer2").off();
+            $("#answer3").off();
+            $("#answer4").off();
+
             // provide logic if a button is clicked... correct or incorrect
             $("#answer1").click(function () {
                 // clearInterval(timer)
@@ -215,6 +221,8 @@ $(document).ready(function () {
     }
 
     function correctAnswerResult() {
+        console.log("inside correct answer result");
+
         // display the results page as an incorrect response
         $("#question-screen").hide();
         $("#answer-results").show();
@@ -229,6 +237,8 @@ $(document).ready(function () {
     }
 
     function incorrectAnswerResult() {
+        console.log("inside incorrect answer result");
+
         // display the results page as an incorrect response
         $("#question-screen").hide();
         $("#answer-results").show();
