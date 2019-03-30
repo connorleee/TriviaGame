@@ -24,6 +24,7 @@ $(document).ready(function () {
         console.log("resetting gameplay from play-again click")
         resetGameplay();
     });
+
     var gameInfo = [
         q1 = {
             question: "What is the highest point of elevation in all the national parks?",
@@ -34,7 +35,7 @@ $(document).ready(function () {
                 { text: "Half Dome - Yosemite National Park, California", correct: false }
             ],
             correctExtension: " at 20,302 ft!",
-            image: "../images/Mckinley.jpg"
+            image: "assets/images/Mckinley.jpg"
         },
 
         q2 = {
@@ -46,7 +47,7 @@ $(document).ready(function () {
                 { text: "Jewel Cave National Monument", correct: false }
             ],
             correctExtension: " at 3454 mapped miles!",
-            image: "../images/Mammoth.jpg"
+            image: "assets/images/Mammoth.jpg"
         },
 
         q3 = {
@@ -58,7 +59,7 @@ $(document).ready(function () {
                 { text: "Luisiana", correct: false }
             ],
             correctExtension: "",
-            image: "../images/Delaware.jpg"
+            image: "assets/images/Delaware.jpg"
         },
 
         q4 = {
@@ -70,7 +71,7 @@ $(document).ready(function () {
                 { text: "Death Valley", correct: false }
             ],
             correctExtension: " which reaches into Wyoming, Montana, and Idaho!",
-            image: "../images/Yellowstone.jpg"
+            image: "assets/images/Yellowstone.jpg"
         },
 
         q5 = {
@@ -82,14 +83,14 @@ $(document).ready(function () {
                 { text: "Yellowstone National Park, Wyoming", correct: false }
             ],
             correctExtension: " with a whopping 13.2 million acres!",
-            image: "../images/Wrangell.jpg"
+            image: "assets/images/Wrangell.jpg"
         },
     ];
 
     var correctAnswers;
     var incorrectAnswers;
     var unanswered;
-    var resultTime = 1;
+    var resultTime = 3;
     var shuffledGameInfo;
 
     function resetGameplay() {
@@ -123,6 +124,15 @@ $(document).ready(function () {
             b[j] = x;
         }
         return b;
+    }
+
+    // finds the correct answer per question and returns the text associated so we can display it on the results screen
+    function filterCorrectAnswer(responsesArray) {
+        for (var i = 0; i < responsesArray.length; i++) {
+            if (responsesArray[i].correct) {
+                return responsesArray[i].text;
+            }
+        }
     }
 
     function loadQuestion() {
@@ -172,33 +182,33 @@ $(document).ready(function () {
             $("#answer1").click(function () {
                 clearInterval(timer)
                 if ($(this).attr("value") === "true") {
-                    correctAnswerResult();
+                    correctAnswerResult(q);
                 } else {
-                    incorrectAnswerResult();
+                    incorrectAnswerResult(q);
                 }
             })
             $("#answer2").click(function () {
                 clearInterval(timer)
                 if ($(this).attr("value") === "true") {
-                    correctAnswerResult();
+                    correctAnswerResult(q);
                 } else {
-                    incorrectAnswerResult();
+                    incorrectAnswerResult(q);
                 }
             })
             $("#answer3").click(function () {
                 clearInterval(timer)
                 if ($(this).attr("value") === "true") {
-                    correctAnswerResult();
+                    correctAnswerResult(q);
                 } else {
-                    incorrectAnswerResult();
+                    incorrectAnswerResult(q);
                 }
             })
             $("#answer4").click(function () {
                 clearInterval(timer)
                 if ($(this).attr("value") === "true") {
-                    correctAnswerResult();
+                    correctAnswerResult(q);
                 } else {
-                    incorrectAnswerResult();
+                    incorrectAnswerResult(q);
                 }
             })
         } else {
@@ -207,43 +217,52 @@ $(document).ready(function () {
         }
     }
 
-    function correctAnswerResult() {
+    function correctAnswerResult(question) {
+        // finds the correct answer
+        var correctAnswerText = filterCorrectAnswer(question.responses);
+
         // display the results page as an incorrect response
         $("#question-screen").hide();
         $("#answer-results").show();
         $("#verdict").text("Correct!");
 
-        // TODO: $("#correct-answer").text(this.correct)
-        // TODO: $("#correct-image").attr("src","this.image")
+        $("#correct-answer").text(correctAnswerText);
+        $("#correct-image").attr("src", question.image)
 
-        correctAnswers += 1;
+        correctAnswers++;
 
         setTimeout(loadQuestion, 1000 * resultTime);
     }
 
-    function incorrectAnswerResult() {
+    function incorrectAnswerResult(question) {
+        var correctAnswerText = filterCorrectAnswer(question.responses);
+
         // display the results page as an incorrect response
         $("#question-screen").hide();
         $("#answer-results").show();
         $("#verdict").text("Incorrect!");
-        // TODO: $("#correct-answer").text(this.correct)
-        // TODO: $("#correct-image").attr("src","this.image")
 
-        incorrectAnswers += 1;
+        $("#correct-answer").text("The correct answer is: " + correctAnswerText);
+        $("#correct-image").attr("src", question.image)
+
+        incorrectAnswers++;
 
         setTimeout(loadQuestion, 1000 * resultTime);
     }
 
     // shows the result of the user's guess or if they timed out. 
-    function timeOutResult() {
+    function timeOutResult(question) {
+        var correctAnswerText = filterCorrectAnswer(question.responses);
+
         // display the results page as an incorrect response
         $("#question-screen").hide();
         $("#answer-results").show();
         $("#verdict").text("Out of time!");
-        // TODO: $("#correct-answer").text(this.correct)
-        // TODO: $("#correct-image").attr("src","this.image")
+        
+        $("#correct-answer").text("The correct answer is: " + correctAnswerText);
+        $("#correct-image").attr("src", question.image)
 
-        unanswered += 1
+        unanswered++;
 
         setTimeout(loadQuestion, 1000 * resultTime);
     }
