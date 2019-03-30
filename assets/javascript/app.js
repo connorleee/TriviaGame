@@ -20,7 +20,10 @@
 
 
 $(document).ready(function () {
-
+    $("#play-again").click(function () {
+        console.log("resetting gameplay from play-again click")
+        resetGameplay();
+    });
     var gameInfo = [
         q1 = {
             question: "What is the highest point of elevation in all the national parks?",
@@ -101,6 +104,7 @@ $(document).ready(function () {
         // shuffle the question objects array to determine which question to ask first
         shuffledGameInfo = shuffleArray(gameInfo);
         console.log(shuffledGameInfo);
+        console.log("______________");
     };
 
     // Start game when game start screen button is clicked. hide start screen, show question screen
@@ -108,7 +112,6 @@ $(document).ready(function () {
         // calls last question in shuffled array
         loadQuestion()
     })
-
 
     function shuffleArray(a) {
         var j, x, i;
@@ -122,30 +125,18 @@ $(document).ready(function () {
         return b;
     }
 
-    function myTimer() {
-        
-    }
-
     function loadQuestion() {
-        // console.log("Correct Answers: " + correctAnswers)
-
         // if statement to end game when there are no more objects in the array
         if (shuffledGameInfo.length !== 0) {
-            console.log("shuffled game info array: "+ shuffledGameInfo.length);
             // remove the current question from the array so it can't be chosen again
             q = shuffledGameInfo.pop();
-            console.log("Game info pop: " + { q });
-            console.log("GameInfo length: " + shuffledGameInfo.length);
 
-            console.log("question: " + q);
-            // console.log({ q });
             $("#answer-results").hide();
             $("#start-screen").hide();
             $("#question-screen").show();
 
             // shuffle the order of responses
             var shuffledResponses = shuffleArray(q.responses);
-            console.log("shuffled responses: " + shuffleArray(shuffledResponses));
 
             // randomly assign answers to the buttons
             $("#question").text(q.question);
@@ -155,25 +146,21 @@ $(document).ready(function () {
             $("#answer4").text(shuffledResponses[3].text);
 
             // assign corresponding correct:boolean to the shuffled responses
-            // console.log("attribute of index 0: " + shuffledResponses[0].correct);
-
             $("#answer1").attr("value", shuffledResponses[0].correct);
             $("#answer2").attr("value", shuffledResponses[1].correct);
             $("#answer3").attr("value", shuffledResponses[2].correct);
             $("#answer4").attr("value", shuffledResponses[3].correct);
 
-            // var remainingTime = 10;
-            // $("#time-remaining").text(remainingTime);
-            // var timer = setInterval(function () {
-            //     remainingTime--
-            //     console.log("remaining time: " + remainingTime);
-            //     $("#time-remaining").text(remainingTime);
-            //     if (remainingTime === 0) {
-            //         console.log("trying to clear timer: " + timer)
-            //         clearInterval(timer)
-            //         timeOutResult()
-            //     }
-            // }, 1000);
+            var remainingTime = 10;
+            $("#time-remaining").text(remainingTime);
+            var timer = setInterval(function () {
+                remainingTime--
+                $("#time-remaining").text(remainingTime);
+                if (remainingTime === 0) {
+                    clearInterval(timer)
+                    timeOutResult()
+                }
+            }, 1000);
 
             // clear the click functions so they dont double up
             $("#answer1").off();
@@ -183,7 +170,7 @@ $(document).ready(function () {
 
             // provide logic if a button is clicked... correct or incorrect
             $("#answer1").click(function () {
-                // clearInterval(timer)
+                clearInterval(timer)
                 if ($(this).attr("value") === "true") {
                     correctAnswerResult();
                 } else {
@@ -191,7 +178,7 @@ $(document).ready(function () {
                 }
             })
             $("#answer2").click(function () {
-                // clearInterval(timer)
+                clearInterval(timer)
                 if ($(this).attr("value") === "true") {
                     correctAnswerResult();
                 } else {
@@ -199,7 +186,7 @@ $(document).ready(function () {
                 }
             })
             $("#answer3").click(function () {
-                // clearInterval(timer)
+                clearInterval(timer)
                 if ($(this).attr("value") === "true") {
                     correctAnswerResult();
                 } else {
@@ -207,7 +194,7 @@ $(document).ready(function () {
                 }
             })
             $("#answer4").click(function () {
-                // clearInterval(timer)
+                clearInterval(timer)
                 if ($(this).attr("value") === "true") {
                     correctAnswerResult();
                 } else {
@@ -215,14 +202,12 @@ $(document).ready(function () {
                 }
             })
         } else {
-            // clearInterval(timer);
+            clearInterval(timer);
             finalResults();
         }
     }
 
     function correctAnswerResult() {
-        console.log("inside correct answer result");
-
         // display the results page as an incorrect response
         $("#question-screen").hide();
         $("#answer-results").show();
@@ -237,8 +222,6 @@ $(document).ready(function () {
     }
 
     function incorrectAnswerResult() {
-        console.log("inside incorrect answer result");
-
         // display the results page as an incorrect response
         $("#question-screen").hide();
         $("#answer-results").show();
@@ -247,8 +230,6 @@ $(document).ready(function () {
         // TODO: $("#correct-image").attr("src","this.image")
 
         incorrectAnswers += 1;
-        console.log("incorrect anaswers: " + incorrectAnswers)
-        console.log("shuffled game info array after response: " + shuffledGameInfo);
 
         setTimeout(loadQuestion, 1000 * resultTime);
     }
@@ -277,9 +258,7 @@ $(document).ready(function () {
         $("#number-incorrect").text(incorrectAnswers);
         $("#number-unanswered").text(unanswered);
 
-        $("#play-again").click(function () {
-            resetGameplay();
-        });
+
     }
 
     resetGameplay();
