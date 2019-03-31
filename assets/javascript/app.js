@@ -90,7 +90,7 @@ $(document).ready(function () {
     var correctAnswers;
     var incorrectAnswers;
     var unanswered;
-    var resultTime = 10;
+    var resultTime = 3;
     var shuffledGameInfo;
 
     function resetGameplay() {
@@ -168,7 +168,7 @@ $(document).ready(function () {
                 $("#time-remaining").text(remainingTime);
                 if (remainingTime === 0) {
                     clearInterval(timer)
-                    timeOutResult()
+                    timeOutResult(q)
                 }
             }, 1000);
 
