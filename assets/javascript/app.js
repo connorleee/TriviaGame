@@ -90,7 +90,7 @@ $(document).ready(function () {
     var correctAnswers;
     var incorrectAnswers;
     var unanswered;
-    var resultTime = 3;
+    var resultTime = 1;
     var shuffledGameInfo;
 
     function resetGameplay() {
